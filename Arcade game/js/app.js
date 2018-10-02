@@ -4,37 +4,45 @@ var Enemy = function(x,y,speed) {
 	this.y = y;
 	this.speed= speed;
     this.sprite = 'images/enemy-bug.png';
-};
+}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    this.x =+ this.speed * dt;
+Enemy.prototype.update = function (dt) {
+    this.x += this.speed * dt;
 
-    if(this.x>510){
+    if(this.x > 510){
     	this.x = -50;
-    	this.speed=100 + Math.floor(Math.random()*222);
+    	this.speed=100 + Math.floor(Math.random() * 222);
     }
 
-    if(player.x<this.x + 80 && player.x +80>this.x && player.y<this.y+ 60 && 60 + player.y >this.y){
-    	player.x=202;
-    	player.y=405;
+    if(player.x< this.x + 80 && player.x + 80 > this.x && player.y< this.y + 60 && 60 + player.y >this.y){
+    	alert(`Sorry try again`);
+    	//player.x=202;
+    	//player.y=405;
+    	resetplayer();
     }
-};
+}
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+}
+
+ function resetplayer(){
+	player.x=202;
+	player.y=405;
+}
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player =function(x,y){
-	this.x=x;
-	this.y=y;
-	this.player='images/char-boy.png';
+var Player=function(x,y,speed) {
+	this.x= x;
+	this.y= y;
+	this.speed=speed;
+	this.sprite='images/char-boy.png';
 }
 
 Player.prototype.update=function(dt){
@@ -42,32 +50,35 @@ Player.prototype.update=function(dt){
 }
 
 Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.player), this.x, this.y);
-};
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
+//keyboard input for the player
 Player.prototype.handleInput=function(KeyPress){
 	if(KeyPress=='left' && this.x>0){
-		this.x=this.x-102;
+		this.x -= 102;
 	}
-	if(KeyPress=='right' && this.x<450){
-		this.x=this.x+102;
+	if(KeyPress=='right' && this.x<405){
+		this.x += 102;
 	}
 	if(KeyPress=='up' && this.y>0){
-		this.y=this.y-83;
+		this.y -= 83;
 	}
-	if(KeyPress=='down' && this.y>0){
-		this.y=this.y+83;
+	if(KeyPress=='down' && this.y<405){
+		this.y += 83;
 	}
 	if(this.y<0){
 		setTimeout(function(){
-			player.x=202;
-			player.y=405;
+			alert(`Congratulations.You have won the game.`);
+			//player.x=202;
+			//player.y=405;
+			resetplayer();
 		},600);
 	}
 }
 
 var allEnemies=[];
-var enemyLocation=[63,147,230];
+var enemyLocation=[53,137,235];
 
 enemyLocation.forEach(function(locationY){
 	enemy=new Enemy(0,locationY,200);
